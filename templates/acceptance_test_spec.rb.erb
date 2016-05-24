@@ -27,7 +27,7 @@ describe "Acceptance Testing" do
         }.not_to raise_exception
       end
     end
-<% test.test_config['runs_before_idempotency'].times do %>
+<% test.test_config['runs_before_idempotency'].times do |t| %>
     describe "running puppet" do
       it "should run with no errors" do
         expect {
@@ -38,7 +38,7 @@ $controlrepo_accpetance = true
 
 include <%= cls.name %>
 CODE
-          apply_manifest_on($host,manifest,{:catch_failures => true})
+          apply_manifest_on($host,manifest,{:catch_failures => <% if t == (test.test_config['runs_before_idempotency'] - 1)%>true<% else %>false<% end %>})
         }.not_to raise_exception
       end
     end
